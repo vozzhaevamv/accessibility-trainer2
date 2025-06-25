@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тренажёр доступности - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Перейти к основному содержанию</a>
+    
+    <header>
+        <nav aria-label="Основная навигация">
+            <ul>
+                <li><a href="{{ url_for('main.index') }}">Главная</a></li>
+                <li><a href="{{ url_for('main.theory') }}">Теория</a></li>
+                <li><a href="{{ url_for('main.tasks') }}">Задания</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('main.dashboard') }}">Панель</a></li>
+                    <li><a href="{{ url_for('main.logout') }}">Выйти</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('main.login') }}">Войти</a></li>
+                    <li><a href="{{ url_for('main.register') }}">Регистрация</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Тренажёр веб-доступности</p>
+        <p>Соответствует WCAG 2.1 Level AA</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

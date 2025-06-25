@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Ошибка сервера{% endblock %}
+
+{% block content %}
+<div class="container error-page">
+    <h1>500 - Ошибка сервера</h1>
+    <p>Произошла внутренняя ошибка сервера. Пожалуйста, попробуйте позже.</p>
+    <img src="{{ url_for('static', filename='images/500.png') }}" alt="Ошибка 500 - Внутренняя ошибка сервера">
+    <p>
+        <a href="{{ url_for('main.index') }}" class="btn">Вернуться на главную</a>
+    </p>
+</div>
+{% endblock %}

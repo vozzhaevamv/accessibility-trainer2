@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ task.title }}{% endblock %}
+
+{% block content %}
+<div class="container quiz-task">
+    <h1>{{ task.title }}</h1>
+    <p>{{ task.description }}</p>
+    
+    <form method="POST" action="{{ url_for('main.quiz_task', task_id=task.id) }}">
+        {% for question in questions %}
+        <div class="question">
+            <h3>Вопрос {{ loop.index }}: {{ question.question }}</h3>
+            
+            <div class="options">
+                {% for key, value in question.get_options().items() %}
+                <div class="option">
+                    <input type="radio" 
+                           id="question_{{ question.id }}_{{ key }}" 
+                           name="question_{{ question.id }}" 
+                           value="{{ key }}"
+                           required>
+                    <label for="question_{{ question.id }}_{{ key }}">
+                        <strong>{{ key }}:</strong> {{ value }}
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        
+        <button type="submit" class="btn">Отправить ответы</button>
+    </form>
+</div>
+{% endblock %}

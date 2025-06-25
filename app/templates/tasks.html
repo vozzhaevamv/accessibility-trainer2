@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Задания{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Список заданий</h1>
+    
+    {% if not tasks %}
+        <div class="alert alert-info">
+            Пока нет доступных заданий. Задания будут добавлены в ближайшее время.
+        </div>
+    {% else %}
+        <div class="tasks-grid">
+            {% for task in tasks %}
+            <div class="task-card">
+                <h2>{{ task.title }}</h2>
+                <p>{{ task.description }}</p>
+                
+                <div class="task-meta">
+                    <span class="difficulty difficulty-{{ task.difficulty }}">
+                        {{ task.difficulty|upper }}
+                    </span>
+                    
+                    {% if progress[task.id].completed %}
+                        <span class="status completed">Выполнено</span>
+                    {% else %}
+                        <span class="status not-completed">Не выполнено</span>
+                    {% endif %}
+                </div>
+                
+                <a href="{% if task.task_type == 'quiz' %}{{ url_for('main.quiz_task', task_id=task.id) }}{% else %}{{ url_for('main.task', task_id=task.id) }}{% endif %}" 
+                   class="btn" 
+                   aria-label="Перейти к заданию '{{ task.title }}'">
+                    Начать
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

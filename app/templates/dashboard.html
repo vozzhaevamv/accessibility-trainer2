@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Панель управления{% endblock %}
+
+{% block content %}
+<div class="container dashboard">
+    <h1>Панель управления</h1>
+    <p>Добро пожаловать, {{ current_user.username }}!</p>
+    
+    <div class="stats">
+        <div class="stat-card">
+            <h2>Общий прогресс</h2>
+            <div class="progress-bar">
+                <div class="progress" style="width: {{ completion_rate }}%">
+                    {{ completion_rate }}%
+                </div>
+            </div>
+            <p>Выполнено: {{ completed_tasks }} из {{ total_tasks }} заданий</p>
+        </div>
+        
+        <div class="stat-card">
+            <h2>Среднее время</h2>
+            <p class="time">
+                {% if avg_time > 0 %}
+                    {{ avg_time | round(1) }} секунд
+                {% else %}
+                    Нет данных
+                {% endif %}
+            </p>
+            <p>на успешное выполнение</p>
+        </div>
+    </div>
+    
+    <div class="actions">
+        <a href="{{ url_for('main.generate_report') }}" class="btn">
+            Скачать отчёт
+        </a>
+        <a href="{{ url_for('main.survey') }}" class="btn">
+            Пройти опрос
+        </a>
+    </div>
+    
+    <div class="recent-tasks">
+        <h2>Последние задания</h2>
+        <ul>
+            {% for metric in metrics[:5] %}
+            <li>
+                <span class="task-name">
+                    {% if metric.task %}
+                        {{ metric.task.title }}
+                    {% else %}
+                        Задание #{{ metric.task_id }}
+                    {% endif %}
+                </span>
+                <span class="task-status {% if metric.success %}success{% else %}failure{% endif %}">
+                    {% if metric.success %}Успешно{% else %}Неудачно{% endif %}
+                </span>
+                <span class="task-time">
+                    {% if metric.time_spent %}
+                        {{ metric.time_spent | round(1) }} сек
+                    {% else %}
+                        Не завершено
+                    {% endif %}
+                </span>
+            </li>
+            {% else %}
+            <li>Пока нет данных о выполненных заданиях</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="progress-list">
+        <h2>Прогресс по заданиям</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Задание</th>
+                    <th>Статус</th>
+                    <th>Попытки</th>
+                    <th>Последняя попытка</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in progress %}
+                <tr>
+                    <td>
+                        {% if p.task %}
+                            <a href="{{ url_for('main.task', task_id=p.task.id) }}">
+                                {{ p.task.title }}
+                            </a>
+                        {% else %}
+                            Задание #{{ p.task_id }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if p.completed %}
+                            <span class="completed">Выполнено</span>
+                        {% else %}
+                            <span class="in-progress">В процессе</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ p.correct_attempts }}</td>
+                    <td>
+                        {% if p.last_attempt %}
+                            {{ p.last_attempt.strftime('%d.%m.%Y %H:%M') }}
+                        {% else %}
+                            Нет данных
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4">Нет данных о прогрессе</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

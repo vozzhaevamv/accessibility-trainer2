@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Теоретические материалы{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Теоретические материалы</h1>
+    
+    <div class="topics">
+        <div class="topic-card">
+            <h2>Основы доступности</h2>
+            <ul>
+                <li><a href="{{ url_for('main.theory_topic', topic='semantics') }}">Семантическая вёрстка</a></li>
+                <li><a href="{{ url_for('main.theory_topic', topic='aria') }}">ARIA-атрибуты</a></li>
+                <li><a href="{{ url_for('main.theory_topic', topic='navigation') }}">Навигация и фокус</a></li>
+            </ul>
+        </div>
+        
+        <div class="topic-card">
+            <h2>WCAG 2.1</h2>
+            <ul>
+                <li><a href="{{ url_for('main.theory_topic', topic='perceivable') }}">Воспринимаемость</a></li>
+                <li><a href="{{ url_for('main.theory_topic', topic='operable') }}">Управляемость</a></li>
+                <li><a href="{{ url_for('main.theory_topic', topic='understandable') }}">Понятность</a></li>
+                <li><a href="{{ url_for('main.theory_topic', topic='robust') }}">Совместимость</a></li>
+            </ul>
+        </div>
+        
+        <div class="topic-card">
+            <h2>Практические примеры</h2>
+            <ul>
+                <li><a href="{{ url_for('main.theory_topic', topic='forms') }}">Доступные формы</a></li>
+                <li><a href="{{ url_for('main.theory_topic', topic='tables') }}">Таблицы</a></li>
+                <li><a href="{{ url_for('main.theory_topic', topic='images') }}">Изображения</a></li>
+                <li><a href="{{ url_for('main.theory_topic', topic='media') }}">Медиа-контент</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

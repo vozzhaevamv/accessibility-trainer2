@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Тренажёр веб-доступности</h1>
+        <p>Научитесь создавать доступные веб-интерфейсы с помощью практических заданий и теоретических материалов.</p>
+        
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('main.tasks') }}" class="btn btn-primary">Продолжить обучение</a>
+        {% else %}
+            <div class="auth-buttons">
+                <a href="{{ url_for('main.register') }}" class="btn btn-primary">Начать обучение</a>
+                <a href="{{ url_for('main.login') }}" class="btn btn-secondary">Войти в систему</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <div class="feature-card">
+            <h2>Теоретические материалы</h2>
+            <p>Изучите основы доступности и принципы WCAG</p>
+            <a href="{{ url_for('main.theory') }}" class="btn">Изучить теорию</a>
+        </div>
+        
+        <div class="feature-card">
+            <h2>Практические задания</h2>
+            <p>Примените знания на практике с помощью интерактивных задач</p>
+            <a href="{{ url_for('main.tasks') }}" class="btn">Начать задания</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
